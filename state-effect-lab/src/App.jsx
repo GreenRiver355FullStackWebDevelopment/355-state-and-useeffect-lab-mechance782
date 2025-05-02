@@ -24,30 +24,51 @@ function App() {
   const fetchCharacterDetails = async (url) => {
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
-    setSelectedCharacter(data);
+
+    const typeNames = [];
+
+    data.types.map((t) => (
+      typeNames.push(t.type.name),
+      typeNames.push(", ")
+    ));
+
+    typeNames.pop();
+
+    const characterDetails = {
+      name: data.name,
+      sprite: data.sprites.front_default,
+      height: data.height,
+      weight: data.weight,
+      types: typeNames
+    }
+
+    console.log(characterDetails);
+    setSelectedCharacter(characterDetails);
   }
 
   const handleBack = () => {
     if (data.previous){
       setPage(data.previous);
     }
+    setSelectedCharacter(null);
   }
 
   const handleNext = () => {
     if (data.next){
       setPage(data.next);
     }
+    setSelectedCharacter(null);
   }
+
 
   return (
     <>
       <Grid container direction="column" sx={{alignItems: "center"}}>
-        <Typography variant='h2' component='h1'>Pokémon List</Typography>
+        <Typography fontWeight="500" color="primary" variant='h2' component='h1'>Pokémon List</Typography>
         <Cards characters={characters} onCharacterClick={fetchCharacterDetails}/>
         <ButtonGroup>
-          <Button onClick={handleBack} disabled={!data || !data.previous}>Back</Button>
-          <Button onClick={handleNext} disabled={!data || !data.next}>Next</Button>
+          <Button color="secondary" variant='contained' onClick={handleBack} disabled={!data || !data.previous}>Back</Button>
+          <Button color="secondary" variant='contained' onClick={handleNext} disabled={!data || !data.next}>Next</Button>
         </ButtonGroup>
         { selectedCharacter && <CardDetails character={selectedCharacter}/>}
       </Grid>

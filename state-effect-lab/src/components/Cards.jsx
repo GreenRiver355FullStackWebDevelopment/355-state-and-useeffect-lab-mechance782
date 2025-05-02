@@ -1,7 +1,6 @@
 import { Card, CardActionArea, Grid, Typography } from '@mui/material';
 export default function Cards({ characters, onCharacterClick }) {
 
-    
     return (
         <>
         <Grid container direction="row" spacing={2} size={{md: 6}}
